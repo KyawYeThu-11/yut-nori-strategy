@@ -16,7 +16,7 @@ for _ in range(10):
                 pos = yut.rule.next_position(pos, ys, True)
 
             # Base distance value
-            base_value = 0.05 + distance_to_goal[pos]
+            base_value = 1 + distance_to_goal[pos]
 
             # Apply bonuses and penalties
             weighted_sum += base_value * prob
@@ -156,16 +156,6 @@ class MyAlgo(yut.engine.Player):
         return best_score, best_move
 
     def action(self, state):
-        """
-        Determine the best action for the current game state.
-        
-        Args:
-            state (tuple): Current game state 
-                        (turn, my_positions, enemy_positions, available_yutscores)
-        
-        Returns:
-            tuple: Move details (mal_index, yut_score, shortcut, extra_info)
-        """
         _, my_positions, enemy_positions, available_yutscores = state
         # Run minimax with Alpha-Beta Pruning to find the best move
         _, best_move = self.minimax(
@@ -193,3 +183,13 @@ class MyAlgo(yut.engine.Player):
             return 0, available_yutscores[0], True, ""
 
         return best_move[0], best_move[1], best_move[2], ""
+        
+if __name__ == "__main__":
+	p = MyAlgo()
+	engine = yut.engine.GameEngine()
+	for s in range(100):
+		winner = engine.play( p, p, seed=s )
+		if winner == 0:
+			print( "Player 1 won!" )
+		else:
+			print( "Player 2 won!" )
